@@ -1,0 +1,12 @@
+// backend/routes/alerts.js
+const twilio = require("twilio");
+const client = twilio(process.env.TWILIO_SID, process.env.TWILIO_AUTH);
+router.post("/whatsapp", async (req, res) => {
+  const { phone, message } = req.body;
+  await client.messages.create({
+    body: message,
+    from: "whatsapp:+14155238886", // Twilio sandbox sender
+    to: `whatsapp:${phone}`
+  });
+  res.json({ status: "sent" });
+});
