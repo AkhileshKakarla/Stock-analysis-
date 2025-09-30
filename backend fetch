@@ -1,0 +1,7 @@
+router.get("/news/:sector?", async (req, res) => {
+  const q = req.params.sector ? `business+${req.params.sector}` : "business";
+  const news = await axios.get("https://newsapi.org/v2/top-headlines", {
+    params: { q, apiKey: process.env.NEWSAPI_KEY }
+  });
+  res.json(news.data.articles);
+});
