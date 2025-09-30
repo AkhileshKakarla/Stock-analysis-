@@ -1,0 +1,6 @@
+router.get("/news", async (req, res) => {
+  const news = await axios.get("https://newsapi.org/v2/top-headlines", {
+    params: { q: "stock market", apiKey: process.env.NEWSAPI_KEY }
+  });
+  res.json(news.data.articles);
+});
