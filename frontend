@@ -1,0 +1,29 @@
+// src/components/StockTicker.js
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+export default function StockTicker() {
+  const [stocks, setStocks] = useState([]);
+  useEffect(() => {
+    const getStocks = async () => {
+      const res = await axios.get("/api/ticker");
+      setStocks(res.data);
+    };
+    getStocks();
+    const intv = setInterval(getStocks, 5000);
+    return () => clearInterval(intv);
+  }, []);
+  return (
+    <div className="ticker-bg">
+      {stocks.map(s => (
+        <span key={s.ticker}>
+          <img src={s.logoUrl} alt="" width={18} />
+          {s.name}: ₹{s.price}
+          <span style={{ color: s.change >= 0 ? "#00FF7F" : "#FF4C4C" }}>
+            {s.change >= 0 ? "▲" : "▼"} {s.change}%
+          </span>
+        </span>
+      ))}
+    </div>
+  );
+}
